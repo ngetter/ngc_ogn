@@ -23,18 +23,26 @@
 #  
 from ogn.client import TelnetClient
 from ogn.parser.telnet_parser import parse
+from terminaltables import AsciiTable
 import json 
+import sys
 
 class beacon_server:
     def __init__(self):
         self.gliders = {}
+        self.th = ['address','frequency','distance','ground_speed','altitude']
         
     def process_beacon(self,raw_message):
         beacon = parse(raw_message)
+        td = [self.th]
         if beacon:
             self.gliders[beacon['address']] = beacon
             for g in self.gliders.items():
-                print(g.keys()[0], g.items())
+                td.append([g[0], g[1]['frequency'], g[1]['distance'], g[1]['ground_speed'],g[1]['altitude']])
+            
+            table = AsciiTable(td)
+            table.title = 'Flight board'
+            print(table.table)
                 
             with open ('teiman_log.dict', mode='a') as f:
                 f.write(str(beacon) )           
