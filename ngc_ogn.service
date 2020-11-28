@@ -1,0 +1,14 @@
+[Unit]
+Description=ngc_ogn demon parsing ARPS
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 -u ngc_ogn.py
+WorkingDirectory=/home/pi/ngc_ogn
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=pi
+
+[Install]
+WantedBy=multi-user.target
