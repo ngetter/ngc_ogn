@@ -29,11 +29,12 @@ import sys
 import curses
 
 class beacon_server:
-    def __init__(self):
+    def __init__(self, args):
         self.gliders = {}
         self.th = ['address','frequency','distance','ground_speed','altitude']
         self.screen = curses.initscr()
-    
+        self.args = args
+        
     def terminate(self):
         curses.endwin()
             
@@ -61,7 +62,7 @@ class beacon_server:
 def main(args):
     client = TelnetClient()
     client.connect()
-    process_beacon = beacon_server()
+    process_beacon = beacon_server(args)
     try:
         client.run(callback=process_beacon.process_beacon)
     except KeyboardInterrupt:
