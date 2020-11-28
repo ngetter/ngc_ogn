@@ -26,11 +26,21 @@ from ogn.parser.telnet_parser import parse
 from terminaltables import AsciiTable
 import json 
 import sys
+import curses
 
 class beacon_server:
     def __init__(self):
         self.gliders = {}
         self.th = ['address','frequency','distance','ground_speed','altitude']
+        self.screen = curses.initscr()
+    
+    def terminate(self):
+        curses.endwin()
+            
+    def disp(self, table):
+        self.screen.addstr(0, 0, table)
+        self.screen.refresh()
+        #curses.napms(10)
         
     def process_beacon(self,raw_message):
         beacon = parse(raw_message)
@@ -42,7 +52,7 @@ class beacon_server:
             
             table = AsciiTable(td)
             table.title = 'Flight board'
-            print(table.table)
+            self.disp(table.table)
                 
             with open ('teiman_log.dict', mode='a') as f:
                 f.write(str(beacon) )           
@@ -57,6 +67,7 @@ def main(args):
     except KeyboardInterrupt:
         print('\nStop ogn gateway')
         client.disconnect()
+        process_beacon.terminate()
             
 if __name__ == '__main__':
     import sys
