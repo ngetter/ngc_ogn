@@ -24,7 +24,7 @@ sudo apt-get install rtl-sdr
 
 Instructions for installing the RTL-SDR drivers manually from source can be found at http://sdr.osmocom.org/trac/wiki/rtl-sdr. Repeated below is the code:
 ```bash
-sudo apt-get install libusb-1.0-0-dev git cmake
+sudo apt-get -y install git g++ gcc make cmake build-essential libconfig-dev libjpeg-dev libusb-1.0-0-dev
 git clone git://git.osmocom.org/rtl-sdr.git
 cd rtl-sdr/
 mkdir build
